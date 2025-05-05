@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>স্বাস্থ্য সেবা - আপনার ডিজিটাল স্বাস্থ্য সহায়ক</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            direction: ltr;
+        }
+        
+        .bangla-text {
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+        
+        .hero-bg {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .medicine-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .auth-modal {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .category-btn.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-heartbeat text-blue-500 text-2xl"></i>
+                <a href="#" class="text-xl font-bold text-blue-600 bangla-text">স্বাস্থ্য সেবা</a>
+            </div>
+            
+            <div class="hidden md:flex space-x-6">
+                <a href="#" class="text-gray-700 hover:text-blue-600 bangla-text">হোম</a>
+                <a href="#medicines" class="text-gray-700 hover:text-blue-600 bangla-text">ঔষধ</a>
+                <a href="#doctors" class="text-gray-700 hover:text-blue-600 bangla-text">ডাক্তার</a>
+                <a href="#articles" class="text-gray-700 hover:text-blue-600 bangla-text">স্বাস্থ্য টিপস</a>
+                <a href="#about" class="text-gray-700 hover:text-blue-600 bangla-text">আমাদের সম্পর্কে</a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleCart()" class="relative">
+                    <i class="fas fa-shopping-cart text-gray-700 text-xl"></i>
+                    <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                </button>
+                
+                <button id="authButton" onclick="toggleAuthModal()" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition bangla-text">
+                    লগইন / রেজিস্টার
+                </button>
+                
+                <button class="md:hidden" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-gray-700 text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white py-2 px-4 shadow-lg">
+            <a href="#" class="block py-2 text-gray-700 hover:text-blue-600 bangla-text">হোম</a>
+            <a href="#medicines" class="block py-2 text-gray-700 hover:text-blue-600 bangla-text">ঔষধ</a>
+            <a href="#doctors" class="block py-2 text-gray-700 hover:text-blue-600 bangla-text">ডাক্তার</a>
+            <a href="#articles" class="block py-2 text-gray-700 hover:text-blue-600 bangla-text">স্বাস্থ্য টিপস</a>
+            <a href="#about" class="block py-2 text-gray-700 hover:text-blue-600 bangla-text">আমাদের সম্পর্কে</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg text-white py-20">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6 bangla-text">আপনার স্বাস্থ্য সুরক্ষায় আমরা আছি</h1>
+            <p class="text-xl mb-8 max-w-2xl mx-auto bangla-text">বাড়িতে বসে অর্ডার করুন প্রেসক্রিপশন ও নন-প্রেসক্রিপশন ঔষধ, পরামর্শ নিন বিশেষজ্ঞ ডাক্তারের সাথে</p>
+            
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md text-lg bangla-text">
+                    <i class="fas fa-pills mr-2"></i> ঔষধ কিনুন
+                </button>
+                <button class="bg-white hover:bg-gray-100 text-blue-600 px-6 py-3 rounded-md text-lg bangla-text">
+                    <i class="fas fa-user-md mr-2"></i> ডাক্তার দেখুন
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800 bangla-text">আমাদের সেবাসমূহ</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition">
+                    <div class="text-blue-500 mb-4">
+                        <i class="fas fa-truck text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800 bangla-text">দ্রুত ডেলিভারি</h3>
+                    <p class="text-gray-600 bangla-text">অর্ডার দিলে ২৪-৪৮ ঘন্টার মধ্যে ঢাকা শহরে এবং ৩-৫ কর্মদিবসে দেশের যেকোনো প্রান্তে পৌঁছে দেওয়া হয়</p>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition">
+                    <div class="text-green-500 mb-4">
+                        <i class="fas fa-check-circle text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800 bangla-text">অথেন্টিক ঔষধ</h3>
+                    <p class="text-gray-600 bangla-text">শুধুমাত্র লাইসেন্সপ্রাপ্ত ফার্মাসিউটিক্যাল কোম্পানির অথেন্টিক ও মানসম্পন্ন ঔষধ সরবরাহ করা হয়</p>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition">
+                    <div class="text-purple-500 mb-4">
+                        <i class="fas fa-headset text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800 bangla-text">২৪/৭ সাপোর্ট</h3>
+                    <p class="text-gray-600 bangla-text">যেকোনো সমস্যা বা জিজ্ঞাসার জন্য আমাদের বিশেষজ্ঞ টিম সারা দিন সেবা প্রদান করে থাকে</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Medicine Categories -->
+    <section class="py-12 bg-gray-50" id="medicines">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-6 text-gray-800 bangla-text">ঔষধ ক্যাটাগরি</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto bangla-text">প্রয়োজন অনুযায়ী ঔষধের ক্যাটাগরি নির্বাচন করুন এবং অর্ডার করুন</p>
+            
+            <div class="flex flex-wrap justify-center gap-3 mb-8">
+                <button onclick="filterMedicines('all')" class="category-btn active bg-blue-100 text-blue-600 px-4 py-2 rounded-full hover:bg-blue-200 transition bangla-text">সব</button>
+                <button onclick="filterMedicines('fever')" class="category-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-200 transition bangla-text">জ্বর</button>
+                <button onclick="filterMedicines('pain')" class="category-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-200 transition bangla-text">ব্যথা</button>
+                <button onclick="filterMedicines('diabetes')" class="category-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-200 transition bangla-text">ডায়াবেটিস</button>
+                <button onclick="filterMedicines('heart')" class="category-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-200 transition bangla-text">হৃদরোগ</button>
+                <button onclick="filterMedicines('vitamin')" class="category-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-200 transition bangla-text">ভিটামিন</button>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Medicine Card 1 -->
+                <div class="medicine-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300">
+                    <div class="relative">
+                        <img src="https://new-media.dhakatribune.com/uploads/2021/08/1-1-1629971027845.jpg" alt="Napa" class="w-full h-48 object-cover">
+                        <span class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full bangla-text">স্টকে আছে</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold mb-1 text-gray-800 bangla-text">নাপা এক্সটেন্ড ৬৬৫ মি.গ্রা.</h3>
+                        <p class="text-gray-600 text-sm mb-2 bangla-text">প্যারাসিটামল ট্যাবলেট</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-blue-600 font-bold bangla-text">৳১০.০০</span>
+                            <button onclick="addToCart('Napa Extend 665mg', 10)" class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm hover:bg-blue-200 transition bangla-text">
+                                <i class="fas fa-cart-plus mr-1"></i> অর্ডার
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Medicine Card 2 -->
+                <div class="medicine-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300">
+                    <div class="relative">
+                        <img src="https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1a1.jpg" alt="Seclo" class="w-full h-48 object-cover">
+                        <span class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full bangla-text">স্টকে আছে</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold mb-1 text-gray-800 bangla-text">সেক্লো ২০ মি.গ্রা.</h3>
+                        <p class="text-gray-600 text-sm mb-2 bangla-text">গ্যাস্ট্রিকের ঔষধ</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-blue-600 font-bold bangla-text">৳১২.০০</span>
+                            <button onclick="addToCart('Seclo 20mg', 12)" class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm hover:bg-blue-200 transition bangla-text">
+                                <i class="fas fa-cart-plus mr-1"></i> অর্ডার
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Medicine Card 3 -->
+                <div class="medicine-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300">
+                    <div class="relative">
+                        <img src="https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1a1.jpg" alt="Metformin" class="w-full h-48 object-cover">
+                        <span class="absolute top-2 right-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full bangla-text">সীমিত স্টক</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold mb-1 text-gray-800 bangla-text">মেটফরমিন ৫০০ মি.গ্রা.</h3>
+                        <p class="text-gray-600 text-sm mb-2 bangla-text">ডায়াবেটিসের ঔষধ</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-blue-600 font-bold bangla-text">৳৮.০০</span>
+                            <button onclick="addToCart('Metformin 500mg', 8)" class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm hover:bg-blue-200 transition bangla-text">
+                                <i class="fas fa-cart-plus mr-1"></i> অর্ডার
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Medicine Card 4 -->
+                <div class="medicine-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300">
+                    <div class="relative">
+                        <img src="https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1a1.jpg" alt="Vitamin" class="w-full h-48 object-cover">
+                        <span class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full bangla-text">স্টকে আছে</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold mb-1 text-gray-800 bangla-text">ভিটামিন ডি-৩ ২০০০ আইইউ</h3>
+                        <p class="text-gray-600 text-sm mb-2 bangla-text">ভিটামিন সাপ্লিমেন্ট</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-blue-600 font-bold bangla-text">৳১৫০.০০</span>
+                            <button onclick="addToCart('Vitamin D-3 2000IU', 150)" class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm hover:bg-blue-200 transition bangla-text">
+                                <i class="fas fa-cart-plus mr-1"></i> অর্ডার
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-10">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md text-lg bangla-text">
+                    সব ঔষধ দেখুন <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Doctor Consultation -->
+    <section class="py-16 bg-white" id="doctors">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-6 text-gray-800 bangla-text">অনলাইন ডাক্তার পরামর্শ</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto bangla-text">বাড়িতে বসেই বিশেষজ্ঞ ডাক্তারের সাথে ভিডিও কনসাল্টেশন বা মেসেজের মাধ্যমে পরামর্শ নিন</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Doctor Card 1 -->
+                <div class="bg-gray-50 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
+                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Doctor" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-1 text-gray-800 bangla-text">ডাঃ আহমেদ হোসেন</h3>
+                        <p class="text-gray-600 mb-3 bangla-text">মেডিসিন বিশেষজ্ঞ</p>
+                        <div class="flex items-center mb-3">
+                            <div class="flex text-yellow-400 mr-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-gray-600 text-sm">(৪.৮)</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4 bangla-text">বঙ্গবন্ধু শেখ মুজিব মেডিকেল বিশ্ববিদ্যালয় থেকে এমবিবিএস ও এমডি ডিগ্রীপ্রাপ্ত। ১৫ বছরের অভিজ্ঞতা।</p>
+                        <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md bangla-text">
+                            <i class="fas fa-calendar-alt mr-2"></i> অ্যাপয়েন্টমেন্ট নিন
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Doctor Card 2 -->
+                <div class="bg-gray-50 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
+                    <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Doctor" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-1 text-gray-800 bangla-text">ডাঃ ফারহানা ইসলাম</h3>
+                        <p class="text-gray-600 mb-3 bangla-text">গাইনী বিশেষজ্ঞ</p>
+                        <div class="flex items-center mb-3">
+                            <div class="flex text-yellow-400 mr-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-gray-600 text-sm">(৫.০)</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4 bangla-text">ঢাকা মেডিকেল কলেজ থেকে এমবিবিএস ও এফসিপিএস ডিগ্রীপ্রাপ্ত। ১২ বছরের অভিজ্ঞতা।</p>
+                        <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md bangla-text">
+                            <i class="fas fa-calendar-alt mr-2"></i> অ্যাপয়েন্টমেন্ট নিন
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Doctor Card 3 -->
+                <div class="bg-gray-50 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
+                    <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1528&q=80" alt="Doctor" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-1 text-gray-800 bangla-text">ডাঃ রাকিবুল হাসান</h3>
+                        <p class="text-gray-600 mb-3 bangla-text">শিশু বিশেষজ্ঞ</p>
+                        <div class="flex items-center mb-3">
+                            <div class="flex text-yellow-400 mr-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="text-gray-600 text-sm">(৪.২)</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4 bangla-text">চট্টগ্রাম মেডিকেল কলেজ থেকে এমবিবিএস ও এমডি ডিগ্রীপ্রাপ্ত। ৮ বছরের অভিজ্ঞতা।</p>
+                        <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md bangla-text">
+                            <i class="fas fa-calendar-alt mr-2"></i> অ্যাপয়েন্টমেন্ট নিন
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Health Articles -->
+    <section class="py-16 bg-gray-50" id="articles">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-6 text-gray-800 bangla-text">স্বাস্থ্য টিপস ও নিবন্ধ</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto bangla-text">স্বাস্থ্য সংক্রান্ত গুরুত্বপূর্ণ তথ্য ও টিপস জানুন আমাদের বিশেষজ্ঞদের কাছ থেকে</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Article 1 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
+                    <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Healthy Food" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="text-blue-600 text-sm font-medium bangla-text">পুষ্টি</span>
+                        <h3 class="text-xl font-semibold my-2 text-gray-800 bangla-text">সুষম খাদ্য তালিকা: কী খাবেন, কী খাবেন না</h3>
+                        <p class="text-gray-600 text-sm mb-4 bangla-text">প্রতিদিনের খাদ্য তালিকায় কী কী খাবার রাখবেন এবং কোন খাবারগুলো এড়িয়ে চলবেন তা জানুন এই নিবন্ধে...</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-500 text-sm bangla-text">২ দিন আগে</span>
+                            <a href="#" class="text-blue-600 text-sm font-medium hover:text-blue-700 bangla-text">আরও পড়ুন</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Article 2 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
+                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Exercise" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="text-green-600 text-sm font-medium bangla-text">ব্যায়াম</span>
+                        <h3 class="text-xl font-semibold my-2 text-gray-800 bangla-text">বাড়িতে বসে সহজ ব্যায়াম: স্বাস্থ্যকর থাকার উপায়</h3>
+                        <p class="text-gray-600 text-sm mb-4 bangla-text">বাড়িতে বসে কিভাবে নিয়মিত ব্যায়াম করতে পারেন এবং সুস্থ থাকতে পারেন তা জানুন এই নিবন্ধে...</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-500 text-sm bangla-text">১ সপ্তাহ আগে</span>
+                            <a href="#" class="text-blue-600 text-sm font-medium hover:text-blue-700 bangla-text">আরও পড়ুন</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Article 3 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
+                    <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Mental Health" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="text-purple-600 text-sm font-medium bangla-text">মানসিক স্বাস্থ্য</span>
+                        <h3 class="text-xl font-semibold my-2 text-gray-800 bangla-text">মানসিক চাপ কমানোর ১০টি কার্যকরী উপায়</h3>
+                        <p class="text-gray-600 text-sm mb-4 bangla-text">দৈনন্দিন জীবনের মানসিক চাপ থেকে মুক্তি পেতে এই সহজ ও কার্যকরী উপায়গুলো অনুসরণ করুন...</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-500 text-sm bangla-text">২ সপ্তাহ আগে</span>
+                            <a href="#" class="text-blue-600 text-sm font-medium hover:text-blue-700 bangla-text">আরও পড়ুন</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-10">
+                <button class="bg-white hover:bg-gray-100 text-blue-600 border border-blue-600 px-6 py-3 rounded-md text-lg bangla-text">
+                    সব নিবন্ধ দেখুন <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800 bangla-text">আমাদের গ্রাহকদের মতামত</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-yellow-400 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-4 italic bangla-text">"স্বাস্থ্য সেবার মাধ্যমে ঔষধ অর্ডার দেওয়া খুবই সহজ এবং ডেলিভারি সময়মতো পেয়েছি। বিশেষ করে লকডাউনের সময় তাদের সেবা আমার জন্য খুবই উপকারী ছিল।"</p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Customer" class="w-10 h-10 rounded-full mr-3">
+                        <div>
+                            <h4 class="font-medium text-gray-800 bangla-text">রফিকুল ইসলাম</h4>
+                            <p class="text-gray-600 text-sm bangla-text">ঢাকা</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-yellow-400 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-4 italic bangla-text">"ডাক্তার পরামর্শের সেবাটি অসাধারণ। বাসায় বসেই বিশেষজ্ঞ ডাক্তারের সাথে কথা বলার সুযোগ পেয়েছি। ঔষধও পরের দিন পেয়ে গেছি।"</p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Customer" class="w-10 h-10 rounded-full mr-3">
+                        <div>
+                            <h4 class="font-medium text-gray-800 bangla-text">আয়েশা সিদ্দিকা</h4>
+                            <p class="text-gray-600 text-sm bangla-text">চট্টগ্রাম</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-yellow-400 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-4 italic bangla-text">"স্বাস্থ্য টিপসের নিবন্ধগুলো খুবই তথ্যবহুল। বিশেষ করে ডায়াবেটিস নিয়ন্ত্রণ সম্পর্কিত নিবন্ধটি আমার খুব কাজে লেগেছে।"</p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Customer" class="w-10 h-10 rounded-full mr-3">
+                        <div>
+                            <h4 class="font-medium text-gray-800 bangla-text">জাহিদ হাসান</h4>
+                            <p class="text-gray-600 text-sm bangla-text">সিলেট</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-12 bg-blue-600 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-2xl md:text-3xl font-bold mb-4 bangla-text">আমাদের নিউজলেটার সাবস্ক্রাইব করুন</h2>
+            <p class="mb-6 max-w-2xl mx-auto bangla-text">স্বাস্থ্য সংক্রান্ত নিয়মিত আপডেট, বিশেষ অফার এবং টিপস পেতে আজই সাবস্ক্রাইব করুন</p>
+            
+            <div class="flex flex-col sm:flex-row justify-center max-w-md mx-auto">
+                <input type="email" placeholder="আপনার ইমেইল ঠিকানা" class="px-4 py-3 rounded-l-md w-full text-gray-800 focus:outline-none">
+                <button class="bg-blue-800 hover:bg-blue-900 px-6 py-3 rounded-r-md bangla-text">
+                    সাবস্ক্রাইব করুন
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-16 bg-white" id="about">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0 md:pr-10">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-800 bangla-text">আমাদের সম্পর্কে</h2>
+                    <p class="text-gray-600 mb-4 bangla-text">স্বাস্থ্য সেবা হল বাংলাদেশের একটি领先 ডিজিটাল স্বাস্থ্য প্ল্যাটফর্ম যার লক্ষ্য সকলের জন্য সহজলভ্য, সাশ্রয়ী এবং মানসম্পন্ন স্বাস্থ্য সেবা নিশ্চিত করা।</p>
+                    <p class="text-gray-600 mb-6 bangla-text">২০১৯ সালে প্রতিষ্ঠিত হওয়ার পর থেকে আমরা লক্ষাধিক গ্রাহককে সেবা প্রদান করেছি এবং দেশব্যাপী আমাদের নেটওয়ার্ক ক্রমাগত সম্প্রসারিত হচ্ছে।</p>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md bangla-text">
+                        আরও জানুন
+                    </button>
+                </div>
+                <div class="md:w-1/2">
+                    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="About Us" class="rounded-lg shadow-md w-full">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-12 pb-6">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                <!-- Column 1 -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-heartbeat text-blue-400 text-2xl"></i>
+                        <span class="text-xl font-bold text-blue-400 bangla-text">স্বাস্থ্য সেবা</span>
+                    </div>
+                    <p class="text-gray-400 mb-4 bangla-text">আপনার স্বাস্থ্য আমাদের অগ্রাধিকার। আমরা প্রতিশ্রুতিবদ্ধ সকলের জন্য উন্নতমানের স্বাস্থ্য সেবা নিশ্চিত করতে।</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Column 2 -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 border-b border-gray-700 pb-2 bangla-text">দ্রুত লিংক</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white bangla-text">হোম</a></li>
+                        <li><a href="#medicines" class="text-gray-400 hover:text-white bangla-text">ঔষধ</a></li>
+                        <li><a href="#doctors" class="text-gray-400 hover:text-white bangla-text">ডাক্তার</a></li>
+                        <li><a href="#articles" class="text-gray-400 hover:text-white bangla-text">স্বাস্থ্য টিপস</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white bangla-text">আমাদের সম্পর্কে</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Column 3 -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 border-b border-gray-700 pb-2 bangla-text">যোগাযোগ</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-blue-400"></i>
+                            <span class="bangla-text">১২৩ স্বাস্থ্য সরণি, মতিঝিল, ঢাকা ১০০০</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone-alt mr-3 text-blue-400"></i>
+                            <span class="bangla-text">+৮৮০ ১৯১২ ৩৪৫৬৭৮</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3 text-blue-400"></i>
+                            <span>info@swasthyaseba.com</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Column 4 -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 border-b border-gray-700 pb-2 bangla-text">ডাউনলোড অ্যাপ</h3>
+                    <p class="text-gray-400 mb-4 bangla-text">আমাদের মোবাইল অ্যাপ ডাউনলোড করুন আরও সুবিধাজনক অভিজ্ঞতার জন্য</p>
+                    <div class="flex flex-col space-y-3">
+                        <button class="bg-black hover:bg-gray-800 text-white px-4 py-2 rounded flex items-center">
+                            <i class="fab fa-apple mr-2 text-xl"></i>
+                            <div class="text-left">
+                                <div class="text-xs bangla-text">ডাউনলোড করুন</div>
+                                <div class="text-sm font-medium">App Store</div>
+                            </div>
+                        </button>
+                        <button class="bg-black hover:bg-gray-800 text-white px-4 py-2 rounded flex items-center">
+                            <i class="fab fa-google-play mr-2 text-xl"></i>
+                            <div class="text-left">
+                                <div class="text-xs bangla-text">ডাউনলোড করুন</div>
+                                <div class="text-sm font-medium">Play Store</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-3 md:mb-0 bangla-text">© ২০২৩ স্বাস্থ্য সেবা। সকল স্বত্ব সংরক্ষিত।</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm bangla-text">গোপনীয়তা নীতি</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm bangla-text">ব্যবহারের শর্তাবলী</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm bangla-text">কুকি পলিসি</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cartSidebar" class="fixed top-0 right-0 w-full md:w-96 h-full bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+        <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+            <h3 class="text-lg font-semibold bangla-text">আপনার কার্ট</h3>
+            <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="p-4 overflow-y-auto h-3/4">
+            <!-- Cart Item 1 -->
+            <div class="flex justify-between items-center py-3 border-b border-gray-100">
+                <div class="flex items-center">
+                    <img src="https://new-media.dhakatribune.com/uploads/2021/08/1-1-1629971027845.jpg" alt="Napa" class="w-16 h-16 object-cover rounded">
+                    <div class="ml-3">
+                        <h4 class="text-sm font-medium bangla-text">নাপা এক্সটেন্ড</h4>
+                        <p class="text-xs text-gray-500 bangla-text">৳১০.০০ x 2</p>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <span class="text-sm font-medium mr-3 bangla-text">৳২০.০০</span>
+                    <button class="text-red-500 hover:text-red-700">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Cart Item 2 -->
+            <div class="flex justify-between items-center py-3 border-b border-gray-100">
+                <div class="flex items-center">
+                    <img src="https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1a1.jpg" alt="Seclo" class="w-16 h-16 object-cover rounded">
+                    <div class="ml-3">
+                        <h4 class="text-sm font-medium bangla-text">সেক্লো ২০</h4>
+                        <p class="text-xs text-gray-500 bangla-text">৳১২.০০ x 1</p>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <span class="text-sm font-medium mr-3 bangla-text">৳১২.০০</span>
+                    <button class="text-red-500 hover:text-red-700">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 p-4 bg-gray-50 border-t border-gray-200">
+            <div class="flex justify-between mb-3">
+                <span class="font-medium bangla-text">মোট</span>
+                <span class="font-medium bangla-text">৳৩২.০০</span>
+            </div>
+            <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md bangla-text">
+                চেকআউট করুন
+            </button>
+        </div>
+    </div>
+    <div id="cartOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-40" onclick="toggleCart()"></div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="auth-modal bg-white rounded-lg w-full max-w-md mx-4">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-800 bangla-text">লগইন / রেজিস্টার</h3>
+                    <button onclick="toggleAuthModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <!-- Tabs -->
+                <div class="flex border-b border-gray-200 mb-6">
+                    <button id="loginTab" onclick="switchAuthTab('login')" class="flex-1 py-2 font-medium text-blue-600 border-b-2 border-blue-600 bangla-text">লগইন</button>
+                    <button id="registerTab" onclick="switchAuthTab('register')" class="flex-1 py-2 font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 bangla-text">রেজিস্টার</button>
+                </div>
+                
+                <!-- Login Form -->
+                <div id="loginForm" class="auth-form">
+                    <div class="mb-4">
+                        <label for="loginEmail" class="block text-sm font-medium text-gray-700 mb-1 bangla-text">ইমেইল</label>
+                        <input type="email" id="loginEmail" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-4">
+                        <label for="loginPassword" class="block text-sm font-medium text-gray-700 mb-1 bangla-text">পাসওয়ার্ড</label>
+                        <input type="password" id="loginPassword" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="rememberMe" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                            <label for="rememberMe" class="ml-2 block text-sm text-gray-700 bangla-text">আমাকে মনে রাখুন</label>
+                        </div>
+                        <a href="#" class="text-sm text-blue-600 hover:text-blue-500 bangla-text">পাসওয়ার্ড ভুলে গেছেন?</a>
+                    </div>
+                    <button onclick="login()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md bangla-text">লগইন করুন</button>
+                    
+                    <div class="mt-4 text-center">
+                        <p class="text-sm text-gray-600 bangla-text">অ্যাকাউন্ট নেই? <button onclick="switchAuthTab('register')" class="text-blue-600 hover:text-blue-500 font-medium bangla-text">রেজিস্টার করুন</button></p>
+                    </div>
+                </div>
+                
+                <!-- Register Form -->
+                <div id="registerForm" class="auth-form hidden">
+                    <div class="mb-4">
+                        <label for="registerName" class="block text-sm font-medium text-gray-700 mb-1 bangla-text">পূর্ণ নাম</label>
+                        <input type="text" id="registerName" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-4">
+                        <label for="registerEmail" class="block text-sm font-medium text-gray-700 mb-1 bangla-text">ইমেইল</label>
+                        <input type="email" id="registerEmail" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-4">
+                        <label for="registerPhone" class="block text-sm font-medium text-gray-700 mb-1 bangla-text">ফোন নম্বর</label>
+                        <input type="tel" id="registerPhone" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-4">
+                        <label for="registerPassword" class="block text-sm font-medium text-gray-700 mb-1 bangla-text">পাসওয়ার্ড</label>
+                        <input type="password" id="registerPassword" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-4">
+                        <label for="registerConfirmPassword" class="block text-sm font-medium text-gray-700 mb-1 bangla-text">পাসওয়ার্ড নিশ্চিত করুন</label>
+                        <input type="password" id="registerConfirmPassword" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-4">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="acceptTerms" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                            <label for="acceptTerms" class="ml-2 block text-sm text-gray-700 bangla-text">আমি <a href="#" class="text-blue-600 hover:text-blue-500">ব্যবহারের শর্তাবলী</a> এবং <a href="#" class="text-blue-600 hover:text-blue-500">গোপনীয়তা নীতি</a> মেনে নিচ্ছি</label>
+                        </div>
+                    </div>
+                    <button onclick="register()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md bangla-text">রেজিস্টার করুন</button>
+                    
+                    <div class="mt-4 text-center">
+                        <p class="text-sm text-gray-600 bangla-text">ইতিমধ্যে অ্যাকাউন্ট আছে? <button onclick="switchAuthTab('login')" class="text-blue-600 hover:text-blue-500 font-medium bangla-text">লগইন করুন</button></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        }
+        
+        // Shopping Cart Toggle
+        function toggleCart() {
+            const cartSidebar = document.getElementById('cartSidebar');
+            const cartOverlay = document.getElementById('cartOverlay');
+            cartSidebar.classList.toggle('translate-x-full');
+            cartOverlay.classList.toggle('hidden');
+        }
+        
+        // Auth Modal Toggle
+        function toggleAuthModal() {
+            const authModal = document.getElementById('authModal');
+            authModal.classList.toggle('hidden');
+        }
+        
+        // Switch between Login and Register tabs
+        function switchAuthTab(tab) {
+            const loginTab = document.getElementById('loginTab');
+            const registerTab = document.getElementById('registerTab');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            
+            if (tab === 'login') {
+                loginTab.classList.add('text-blue-600', 'border-blue-600');
+                loginTab.classList.remove('text-gray-500', 'border-transparent');
+                registerTab.classList.add('text-gray-500', 'border-transparent');
+                registerTab.classList.remove('text-blue-600', 'border-blue-600');
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+            } else {
+                registerTab.classList.add('text-blue-600', 'border-blue-600');
+                registerTab.classList.remove('text-gray-500', 'border-transparent');
+                loginTab.classList.add('text-gray-500', 'border-transparent');
+                loginTab.classList.remove('text-blue-600', 'border-blue-600');
+                registerForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+            }
+        }
+        
+        // Login Function
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                alert('দয়া করে ইমেইল এবং পাসওয়ার্ড প্রদান করুন');
+                return;
+            }
+            
+            // Here you would typically make an API call to authenticate
+            console.log('Login attempt with:', email, password);
+            
+            // For demo purposes, just show success and close modal
+            alert('সফলভাবে লগইন করা হয়েছে!');
+            toggleAuthModal();
+            
+            // Update UI to show logged in state
+            const authButton = document.getElementById('authButton');
+            authButton.innerHTML = '<i class="fas fa-user-circle mr-2"></i> আমার অ্যাকাউন্ট';
+            authButton.onclick = function() {
+                window.location.href = '#';
+            };
+        }
+        
+        // Register Function
+        function register() {
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const phone = document.getElementById('registerPhone').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            const acceptTerms = document.getElementById('acceptTerms').checked;
+            
+            if (!name || !email || !phone || !password || !confirmPassword) {
+                alert('দয়া করে সকল প্রয়োজনীয় তথ্য প্রদান করুন');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                alert('পাসওয়ার্ড মিলছে না');
+                return;
+            }
+            
+            if (!acceptTerms) {
+                alert('দয়া করে ব্যবহারের শর্তাবলী এবং গোপনীয়তা নীতি মেনে নিন');
+                return;
+            }
+            
+            // Here you would typically make an API call to register
+            console.log('Registration attempt with:', name, email, phone, password);
+            
+            // For demo purposes, just show success and switch to login
+            alert('সফলভাবে রেজিস্টার করা হয়েছে! এখন লগইন করুন।');
+            switchAuthTab('login');
+        }
+        
+        // Add to Cart Function
+        function addToCart(name, price) {
+            // Here you would typically add the item to a cart in your state management
+            console.log('Added to cart:', name, price);
+            
+            // For demo purposes, just show a confirmation
+            alert(`${name} আপনার কার্টে যোগ করা হয়েছে`);
+        }
+        
+        // Filter Medicines by Category
+        function filterMedicines(category) {
+            // Here you would typically filter the medicines displayed
+            console.log('Filtering by:', category);
+            
+            // For demo purposes, just update the active category button
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-blue-100', 'text-blue-600');
+                btn.classList.add('bg-gray-100', 'text-gray-700');
+            });
+            
+            if (category === 'all') {
+                document.querySelector('.category-btn').classList.add('active', 'bg-blue-100', 'text-blue-600');
+            } else {
+                const activeBtn = document.querySelector(`.category-btn:nth-child(${['all', 'fever', 'pain', 'diabetes', 'heart', 'vitamin'].indexOf(category) + 1})`);
+                activeBtn.classList.add('active', 'bg-blue-100', 'text-blue-600');
+            }
+        }
+    </script>
+</body>
+</html>
