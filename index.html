@@ -42,6 +42,53 @@
             background-color: #3b82f6;
             color: white;
         }
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .quantity-btn {
+            background-color: #f3f4f6;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            cursor: pointer;
+        }
+        
+        .quantity-input {
+            width: 2.5rem;
+            text-align: center;
+            border: none;
+            border-left: 1px solid #e5e7eb;
+            border-right: 1px solid #e5e7eb;
+        }
+        
+        .form-input {
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #6b7280;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -64,7 +111,7 @@
             <div class="flex items-center space-x-4">
                 <button onclick="toggleCart()" class="relative">
                     <i class="fas fa-shopping-cart text-gray-700 text-xl"></i>
-                    <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                    <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
                 </button>
                 
                 <button id="authButton" onclick="toggleAuthModal()" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition bangla-text">
@@ -94,12 +141,12 @@
             <p class="text-xl mb-8 max-w-2xl mx-auto bangla-text">বাড়িতে বসে অর্ডার করুন প্রেসক্রিপশন ও নন-প্রেসক্রিপশন ঔষধ, পরামর্শ নিন বিশেষজ্ঞ ডাক্তারের সাথে</p>
             
             <div class="flex flex-col md:flex-row justify-center gap-4">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md text-lg bangla-text">
+                <a href="#medicines" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md text-lg bangla-text">
                     <i class="fas fa-pills mr-2"></i> ঔষধ কিনুন
-                </button>
-                <button class="bg-white hover:bg-gray-100 text-blue-600 px-6 py-3 rounded-md text-lg bangla-text">
+                </a>
+                <a href="#doctors" class="bg-white hover:bg-gray-100 text-blue-600 px-6 py-3 rounded-md text-lg bangla-text">
                     <i class="fas fa-user-md mr-2"></i> ডাক্তার দেখুন
-                </button>
+                </a>
             </div>
         </div>
     </section>
@@ -144,7 +191,7 @@
             <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto bangla-text">প্রয়োজন অনুযায়ী ঔষধের ক্যাটাগরি নির্বাচন করুন এবং অর্ডার করুন</p>
             
             <div class="flex flex-wrap justify-center gap-3 mb-8">
-                <button onclick="filterMedicines('all')" class="category-btn active bg-blue-100 text-blue-600 px-4 py-2 rounded-full hover:bg-blue-200 transition bangla-text">সব</button>
+                <button onclick="filterMedicines('all')" class="category-btn active bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition bangla-text">সব</button>
                 <button onclick="filterMedicines('fever')" class="category-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-200 transition bangla-text">জ্বর</button>
                 <button onclick="filterMedicines('pain')" class="category-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-200 transition bangla-text">ব্যথা</button>
                 <button onclick="filterMedicines('diabetes')" class="category-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-200 transition bangla-text">ডায়াবেটিস</button>
@@ -152,78 +199,8 @@
                 <button onclick="filterMedicines('vitamin')" class="category-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-200 transition bangla-text">ভিটামিন</button>
             </div>
             
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <!-- Medicine Card 1 -->
-                <div class="medicine-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300">
-                    <div class="relative">
-                        <img src="https://new-media.dhakatribune.com/uploads/2021/08/1-1-1629971027845.jpg" alt="Napa" class="w-full h-48 object-cover">
-                        <span class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full bangla-text">স্টকে আছে</span>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-lg font-semibold mb-1 text-gray-800 bangla-text">নাপা এক্সটেন্ড ৬৬৫ মি.গ্রা.</h3>
-                        <p class="text-gray-600 text-sm mb-2 bangla-text">প্যারাসিটামল ট্যাবলেট</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-blue-600 font-bold bangla-text">৳১০.০০</span>
-                            <button onclick="addToCart('Napa Extend 665mg', 10)" class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm hover:bg-blue-200 transition bangla-text">
-                                <i class="fas fa-cart-plus mr-1"></i> অর্ডার
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Medicine Card 2 -->
-                <div class="medicine-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300">
-                    <div class="relative">
-                        <img src="https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1a1.jpg" alt="Seclo" class="w-full h-48 object-cover">
-                        <span class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full bangla-text">স্টকে আছে</span>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-lg font-semibold mb-1 text-gray-800 bangla-text">সেক্লো ২০ মি.গ্রা.</h3>
-                        <p class="text-gray-600 text-sm mb-2 bangla-text">গ্যাস্ট্রিকের ঔষধ</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-blue-600 font-bold bangla-text">৳১২.০০</span>
-                            <button onclick="addToCart('Seclo 20mg', 12)" class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm hover:bg-blue-200 transition bangla-text">
-                                <i class="fas fa-cart-plus mr-1"></i> অর্ডার
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Medicine Card 3 -->
-                <div class="medicine-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300">
-                    <div class="relative">
-                        <img src="https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1a1.jpg" alt="Metformin" class="w-full h-48 object-cover">
-                        <span class="absolute top-2 right-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full bangla-text">সীমিত স্টক</span>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-lg font-semibold mb-1 text-gray-800 bangla-text">মেটফরমিন ৫০০ মি.গ্রা.</h3>
-                        <p class="text-gray-600 text-sm mb-2 bangla-text">ডায়াবেটিসের ঔষধ</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-blue-600 font-bold bangla-text">৳৮.০০</span>
-                            <button onclick="addToCart('Metformin 500mg', 8)" class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm hover:bg-blue-200 transition bangla-text">
-                                <i class="fas fa-cart-plus mr-1"></i> অর্ডার
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Medicine Card 4 -->
-                <div class="medicine-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300">
-                    <div class="relative">
-                        <img src="https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1a1.jpg" alt="Vitamin" class="w-full h-48 object-cover">
-                        <span class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full bangla-text">স্টকে আছে</span>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-lg font-semibold mb-1 text-gray-800 bangla-text">ভিটামিন ডি-৩ ২০০০ আইইউ</h3>
-                        <p class="text-gray-600 text-sm mb-2 bangla-text">ভিটামিন সাপ্লিমেন্ট</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-blue-600 font-bold bangla-text">৳১৫০.০০</span>
-                            <button onclick="addToCart('Vitamin D-3 2000IU', 150)" class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm hover:bg-blue-200 transition bangla-text">
-                                <i class="fas fa-cart-plus mr-1"></i> অর্ডার
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            <div id="medicineContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Medicines will be loaded here by JavaScript -->
             </div>
             
             <div class="text-center mt-10">
@@ -409,7 +386,7 @@
                             <i class="fas fa-star-half-alt"></i>
                         </div>
                     </div>
-                    <p class="text-gray-700 mb-4 italic bangla-text">"ডাক্তার পরামর্শের সেবাটি অসাধারণ। বাসায় বসেই বিশেষজ্ঞ ডাক্তারের সাথে কথা বলার সুযোগ পেয়েছি। ঔষধও পরের দিন পেয়ে গেছি।"</p>
+                    <p class="text-gray-700 mb-4 italic bangla-text">"ডাক্তার পরামর্শের সেবাটি অসাধারণ। বাসায় বসেই বিশেষজ্ঞ ডাক্তারের সাথে কথা বলার সুযোগ পেয়েছি। ঔষধও পরের দিন পেয়ে গেছি۔"</p>
                     <div class="flex items-center">
                         <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Customer" class="w-10 h-10 rounded-full mr-3">
                         <div>
@@ -569,45 +546,14 @@
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        <div class="p-4 overflow-y-auto h-3/4">
-            <!-- Cart Item 1 -->
-            <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                <div class="flex items-center">
-                    <img src="https://new-media.dhakatribune.com/uploads/2021/08/1-1-1629971027845.jpg" alt="Napa" class="w-16 h-16 object-cover rounded">
-                    <div class="ml-3">
-                        <h4 class="text-sm font-medium bangla-text">নাপা এক্সটেন্ড</h4>
-                        <p class="text-xs text-gray-500 bangla-text">৳১০.০০ x 2</p>
-                    </div>
-                </div>
-                <div class="flex items-center">
-                    <span class="text-sm font-medium mr-3 bangla-text">৳২০.০০</span>
-                    <button class="text-red-500 hover:text-red-700">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Cart Item 2 -->
-            <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                <div class="flex items-center">
-                    <img src="https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1a1.jpg" alt="Seclo" class="w-16 h-16 object-cover rounded">
-                    <div class="ml-3">
-                        <h4 class="text-sm font-medium bangla-text">সেক্লো ২০</h4>
-                        <p class="text-xs text-gray-500 bangla-text">৳১২.০০ x 1</p>
-                    </div>
-                </div>
-                <div class="flex items-center">
-                    <span class="text-sm font-medium mr-3 bangla-text">৳১২.০০</span>
-                    <button class="text-red-500 hover:text-red-700">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </div>
-            </div>
+        <div id="cartItems" class="p-4 overflow-y-auto h-3/4">
+            <!-- Cart items will be loaded here by JavaScript -->
+            <p id="emptyCartMessage" class="text-gray-500 text-center py-10 bangla-text">আপনার কার্টে কোনো পণ্য নেই</p>
         </div>
         <div class="absolute bottom-0 left-0 right-0 p-4 bg-gray-50 border-t border-gray-200">
             <div class="flex justify-between mb-3">
                 <span class="font-medium bangla-text">মোট</span>
-                <span class="font-medium bangla-text">৳৩২.০০</span>
+                <span id="cartTotal" class="font-medium bangla-text">৳০.০০</span>
             </div>
             <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md bangla-text">
                 চেকআউট করুন
@@ -636,12 +582,15 @@
                 <!-- Login Form -->
                 <div id="loginForm" class="auth-form">
                     <div class="mb-4">
-                        <label for="loginEmail" class="block text-sm font-medium text-gray-700 mb-1 bangla-text">ইমেইল</label>
-                        <input type="email" id="loginEmail" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <label for="loginEmail" class="block text-sm font-medium text-gray-700 mb-1 bangla-text">ইমেইল বা ফোন নম্বর</label>
+                        <input type="text" id="loginEmail" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 form-input" placeholder="আপনার ইমেইল বা ফোন নম্বর লিখুন">
+                        <div id="loginEmailError" class="error-message hidden bangla-text">ইমেইল বা ফোন নম্বর প্রয়োজন</div>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 relative">
                         <label for="loginPassword" class="block text-sm font-medium text-gray-700 mb-1 bangla-text">পাসওয়ার্ড</label>
-                        <input type="password" id="loginPassword" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="password" id="loginPassword" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 form-input pr-10" placeholder="আপনার পাসওয়ার্ড লিখুন">
+                        <i class="fas fa-eye password-toggle" onclick="togglePasswordVisibility('loginPassword', this)"></i>
+                        <div id="loginPasswordError" class="error-message hidden bangla-text">পাসওয়ার্ড প্রয়োজন</div>
                     </div>
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center">
@@ -661,29 +610,37 @@
                 <div id="registerForm" class="auth-form hidden">
                     <div class="mb-4">
                         <label for="registerName" class="block text-sm font-medium text-gray-700 mb-1 bangla-text">পূর্ণ নাম</label>
-                        <input type="text" id="registerName" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="text" id="registerName" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 form-input" placeholder="আপনার পূর্ণ নাম লিখুন">
+                        <div id="registerNameError" class="error-message hidden bangla-text">পূর্ণ নাম প্রয়োজন</div>
                     </div>
                     <div class="mb-4">
                         <label for="registerEmail" class="block text-sm font-medium text-gray-700 mb-1 bangla-text">ইমেইল</label>
-                        <input type="email" id="registerEmail" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="email" id="registerEmail" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 form-input" placeholder="আপনার ইমেইল লিখুন">
+                        <div id="registerEmailError" class="error-message hidden bangla-text">সঠিক ইমেইল প্রয়োজন</div>
                     </div>
                     <div class="mb-4">
                         <label for="registerPhone" class="block text-sm font-medium text-gray-700 mb-1 bangla-text">ফোন নম্বর</label>
-                        <input type="tel" id="registerPhone" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="tel" id="registerPhone" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 form-input" placeholder="আপনার ফোন নম্বর লিখুন">
+                        <div id="registerPhoneError" class="error-message hidden bangla-text">সঠিক ফোন নম্বর প্রয়োজন</div>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 relative">
                         <label for="registerPassword" class="block text-sm font-medium text-gray-700 mb-1 bangla-text">পাসওয়ার্ড</label>
-                        <input type="password" id="registerPassword" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="password" id="registerPassword" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 form-input pr-10" placeholder="পাসওয়ার্ড লিখুন (ন্যূনতম ৬ অক্ষর)">
+                        <i class="fas fa-eye password-toggle" onclick="togglePasswordVisibility('registerPassword', this)"></i>
+                        <div id="registerPasswordError" class="error-message hidden bangla-text">ন্যূনতম ৬ অক্ষরের পাসওয়ার্ড প্রয়োজন</div>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 relative">
                         <label for="registerConfirmPassword" class="block text-sm font-medium text-gray-700 mb-1 bangla-text">পাসওয়ার্ড নিশ্চিত করুন</label>
-                        <input type="password" id="registerConfirmPassword" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="password" id="registerConfirmPassword" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 form-input pr-10" placeholder="পাসওয়ার্ড আবার লিখুন">
+                        <i class="fas fa-eye password-toggle" onclick="togglePasswordVisibility('registerConfirmPassword', this)"></i>
+                        <div id="registerConfirmPasswordError" class="error-message hidden bangla-text">পাসওয়ার্ড মিলছে না</div>
                     </div>
                     <div class="mb-4">
-                        <div class="flex items-center">
-                            <input type="checkbox" id="acceptTerms" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <div class="flex items-start">
+                            <input type="checkbox" id="acceptTerms" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded mt-1">
                             <label for="acceptTerms" class="ml-2 block text-sm text-gray-700 bangla-text">আমি <a href="#" class="text-blue-600 hover:text-blue-500">ব্যবহারের শর্তাবলী</a> এবং <a href="#" class="text-blue-600 hover:text-blue-500">গোপনীয়তা নীতি</a> মেনে নিচ্ছি</label>
                         </div>
+                        <div id="acceptTermsError" class="error-message hidden bangla-text">আপনাকে শর্তাবলী মেনে নিতে হবে</div>
                     </div>
                     <button onclick="register()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md bangla-text">রেজিস্টার করুন</button>
                     
@@ -696,134 +653,59 @@
     </div>
 
     <script>
-        // Mobile Menu Toggle
-        function toggleMobileMenu() {
-            const mobileMenu = document.getElementById('mobileMenu');
-            mobileMenu.classList.toggle('hidden');
-        }
-        
-        // Shopping Cart Toggle
-        function toggleCart() {
-            const cartSidebar = document.getElementById('cartSidebar');
-            const cartOverlay = document.getElementById('cartOverlay');
-            cartSidebar.classList.toggle('translate-x-full');
-            cartOverlay.classList.toggle('hidden');
-        }
-        
-        // Auth Modal Toggle
-        function toggleAuthModal() {
-            const authModal = document.getElementById('authModal');
-            authModal.classList.toggle('hidden');
-        }
-        
-        // Switch between Login and Register tabs
-        function switchAuthTab(tab) {
-            const loginTab = document.getElementById('loginTab');
-            const registerTab = document.getElementById('registerTab');
-            const loginForm = document.getElementById('loginForm');
-            const registerForm = document.getElementById('registerForm');
-            
-            if (tab === 'login') {
-                loginTab.classList.add('text-blue-600', 'border-blue-600');
-                loginTab.classList.remove('text-gray-500', 'border-transparent');
-                registerTab.classList.add('text-gray-500', 'border-transparent');
-                registerTab.classList.remove('text-blue-600', 'border-blue-600');
-                loginForm.classList.remove('hidden');
-                registerForm.classList.add('hidden');
-            } else {
-                registerTab.classList.add('text-blue-600', 'border-blue-600');
-                registerTab.classList.remove('text-gray-500', 'border-transparent');
-                loginTab.classList.add('text-gray-500', 'border-transparent');
-                loginTab.classList.remove('text-blue-600', 'border-blue-600');
-                registerForm.classList.remove('hidden');
-                loginForm.classList.add('hidden');
-            }
-        }
-        
-        // Login Function
-        function login() {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            if (!email || !password) {
-                alert('দয়া করে ইমেইল এবং পাসওয়ার্ড প্রদান করুন');
-                return;
-            }
-            
-            // Here you would typically make an API call to authenticate
-            console.log('Login attempt with:', email, password);
-            
-            // For demo purposes, just show success and close modal
-            alert('সফলভাবে লগইন করা হয়েছে!');
-            toggleAuthModal();
-            
-            // Update UI to show logged in state
-            const authButton = document.getElementById('authButton');
-            authButton.innerHTML = '<i class="fas fa-user-circle mr-2"></i> আমার অ্যাকাউন্ট';
-            authButton.onclick = function() {
-                window.location.href = '#';
-            };
-        }
-        
-        // Register Function
-        function register() {
-            const name = document.getElementById('registerName').value;
-            const email = document.getElementById('registerEmail').value;
-            const phone = document.getElementById('registerPhone').value;
-            const password = document.getElementById('registerPassword').value;
-            const confirmPassword = document.getElementById('registerConfirmPassword').value;
-            const acceptTerms = document.getElementById('acceptTerms').checked;
-            
-            if (!name || !email || !phone || !password || !confirmPassword) {
-                alert('দয়া করে সকল প্রয়োজনীয় তথ্য প্রদান করুন');
-                return;
-            }
-            
-            if (password !== confirmPassword) {
-                alert('পাসওয়ার্ড মিলছে না');
-                return;
-            }
-            
-            if (!acceptTerms) {
-                alert('দয়া করে ব্যবহারের শর্তাবলী এবং গোপনীয়তা নীতি মেনে নিন');
-                return;
-            }
-            
-            // Here you would typically make an API call to register
-            console.log('Registration attempt with:', name, email, phone, password);
-            
-            // For demo purposes, just show success and switch to login
-            alert('সফলভাবে রেজিস্টার করা হয়েছে! এখন লগইন করুন।');
-            switchAuthTab('login');
-        }
-        
-        // Add to Cart Function
-        function addToCart(name, price) {
-            // Here you would typically add the item to a cart in your state management
-            console.log('Added to cart:', name, price);
-            
-            // For demo purposes, just show a confirmation
-            alert(`${name} আপনার কার্টে যোগ করা হয়েছে`);
-        }
-        
-        // Filter Medicines by Category
-        function filterMedicines(category) {
-            // Here you would typically filter the medicines displayed
-            console.log('Filtering by:', category);
-            
-            // For demo purposes, just update the active category button
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.classList.remove('active', 'bg-blue-100', 'text-blue-600');
-                btn.classList.add('bg-gray-100', 'text-gray-700');
-            });
-            
-            if (category === 'all') {
-                document.querySelector('.category-btn').classList.add('active', 'bg-blue-100', 'text-blue-600');
-            } else {
-                const activeBtn = document.querySelector(`.category-btn:nth-child(${['all', 'fever', 'pain', 'diabetes', 'heart', 'vitamin'].indexOf(category) + 1})`);
-                activeBtn.classList.add('active', 'bg-blue-100', 'text-blue-600');
-            }
-        }
-    </script>
-</body>
+        // Medicine data for different categories
+        const medicines = {
+            all: [
+                { id: 1, name: "নাপা এক্সটেন্ড ৬৬৫ মি.গ্রা.", description: "প্যারাসিটামল ট্যাবলেট", price: 10, image: "https://new-media.dhakatribune.com/uploads/2021/08/1-1-1629971027845.jpg", stock: "স্টকে আছে", category: "fever" },
+                { id: 2, name: "সেক্লো ২০ মি.গ্রা.", description: "গ্যাস্ট্রিকের ঔষধ", price: 12, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে", category: "pain" },
+                { id: 3, name: "মেটফরমিন ৫০০ মি.গ্রা.", description: "ডায়াবেটিসের ঔষধ", price: 8, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "সীমিত স্টক", category: "diabetes" },
+                { id: 4, name: "ভিটামিন ডি-৩ ২০০০ আইইউ", description: "ভিটামিন সাপ্লিমেন্ট", price: 150, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে", category: "vitamin" },
+                { id: 5, name: "এসপিরিন ৭৫ মি.গ্রা.", description: "হৃদরোগের ঔষধ", price: 6, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে", category: "heart" },
+                { id: 6, name: "অ্যামোক্সিসিলিন ৫০০ মি.গ্রা.", description: "অ্যান্টিবায়োটিক", price: 25, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে", category: "fever" },
+                { id: 7, name: "অ্যান্টাসিড ট্যাবলেট", description: "অ্যাসিডিটি কমানোর ঔষধ", price: 5, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে", category: "pain" },
+                { id: 8, name: "গ্লাইবেঞ্চামাইড ৫ মি.গ্রা.", description: "ডায়াবেটিসের ঔষধ", price: 7, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে", category: "diabetes" },
+                { id: 9, name: "অ্যাটোরভাস্টেটিন ২০ মি.গ্রা.", description: "কোলেস্টেরল কমানোর ঔষধ", price: 18, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে", category: "heart" },
+                { id: 10, name: "ভিটামিন বি-কমপ্লেক্স", description: "ভিটামিন সাপ্লিমেন্ট", price: 30, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে", category: "vitamin" },
+                { id: 11, name: "সিট্রিজিন ১০ মি.গ্রা.", description: "অ্যালার্জির ঔষধ", price: 4, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে", category: "fever" },
+                { id: 12, name: "আইবুপ্রোফেন ৪০০ মি.গ্রা.", description: "ব্যথানাশক ঔষধ", price: 15, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে", category: "pain" },
+                { id: 13, name: "ইনসুলিন সিরিঞ্জ", description: "ডায়াবেটিসের সরঞ্জাম", price: 10, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে", category: "diabetes" },
+                { id: 14, name: "লসারটান ৫০ মি.গ্রা.", description: "উচ্চ রক্তচাপের ঔষধ", price: 12, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে", category: "heart" },
+                { id: 15, name: "ভিটামিন সি ৫০০ মি.গ্রা.", description: "ভিটামিন সাপ্লিমেন্ট", price: 20, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে", category: "vitamin" },
+                { id: 16, name: "প্যারাসিটামল ৫০০ মি.গ্রা.", description: "জ্বর ও ব্যথার ঔষধ", price: 3, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে", category: "fever" },
+                { id: 17, name: "ডাইক্লোফেনাক সোডিয়াম ৫০ মি.গ্রা.", description: "ব্যথানাশক ঔষধ", price: 8, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে", category: "pain" },
+                { id: 18, name: "গ্লুকোমিটার স্ট্রিপ", description: "ডায়াবেটিস পরীক্ষার সরঞ্জাম", price: 200, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে", category: "diabetes" },
+                { id: 19, name: "ক্লোপিডোগ্রেল ৭৫ মি.গ্রা.", description: "হৃদরোগের ঔষধ", price: 22, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে", category: "heart" },
+                { id: 20, name: "মাল্টিভিটামিন ক্যাপসুল", description: "ভিটামিন সাপ্লিমেন্ট", price: 40, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে", category: "vitamin" }
+            ],
+            fever: [
+                { id: 1, name: "নাপা এক্সটেন্ড ৬৬৫ মি.গ্রা.", description: "প্যারасিটামল ট্যাবলেট", price: 10, image: "https://new-media.dhakatribune.com/uploads/2021/08/1-1-1629971027845.jpg", stock: "স্টকে আছে" },
+                { id: 6, name: "অ্যামোক্সিসিলিন ৫০০ মি.গ্রা.", description: "অ্যান্টিবায়োটিক", price: 25, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 11, name: "সিট্রিজিন ১০ মি.গ্রা.", description: "অ্যালার্জির ঔষধ", price: 4, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 16, name: "প্যারাসিটামল ৫০০ মি.গ্রা.", description: "জ্বর ও ব্যথার ঔষধ", price: 3, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 21, name: "ফেক্সোফেনাডিন ১২০ মি.গ্রা.", description: "অ্যালার্জির ঔষধ", price: 18, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 22, name: "সিপ্রোফ্লোক্সাসিন ৫০০ মি.গ্রা.", description: "অ্যান্টিবায়োটিক", price: 30, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 23, name: "অ্যাজিথ্রোমাইসিন ৫০০ মি.গ্রা.", description: "অ্যান্টিবায়োটিক", price: 35, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 24, name: "ডক্সিসাইক্লিন ১০০ মি.গ্রা.", description: "অ্যান্টিবায়োটিক", price: 20, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 25, name: "লোরাটাডিন ১০ মি.গ্রা.", description: "অ্যালার্জির ঔষধ", price: 5, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 26, name: "নিমেসুলাইড ১০০ মি.গ্রা.", description: "জ্বর ও ব্যথার ঔষধ", price: 15, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 27, name: "সেফিক্সিম ২০০ মি.গ্রা.", description: "অ্যান্টিবায়োটিক", price: 40, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 28, name: "ক্ল্যারিথ্রোমাইসিন ৫০০ মি.গ্রা.", description: "অ্যান্টিবায়োটিক", price: 45, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 29, name: "ডিফেনহাইড্রামিন ২৫ মি.গ্রা.", description: "অ্যালার্জির ঔষধ", price: 3, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 30, name: "মেট্রোনিডাজোল ৪০০ মি.গ্রা.", description: "অ্যান্টিবায়োটিক", price: 12, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 31, name: "স্যালবিউটামল ইনহেলার", description: "অ্যাজমার ঔষধ", price: 150, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 32, name: "মন্টেলুকাস্ট ১০ মি.গ্রা.", description: "অ্যালার্জির ঔষধ", price: 25, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 33, name: "অ্যামব্রক্সল ৩০ মি.গ্রা.", description: "কাশির ঔষধ", price: 8, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 34, name: "সিঙ্গুলেয়ার ১০ মি.গ্রা.", description: "অ্যাজমার ঔষধ", price: 50, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 35, name: "লেভোসেট্রিজিন ৫ মি.গ্রা.", description: "অ্যালার্জির ঔষধ", price: 6, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 36, name: "অ্যামব্রক্সল সিরাপ", description: "কাশির ঔষধ", price: 60, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" }
+            ],
+            pain: [
+                { id: 2, name: "সেক্লো ২০ মি.গ্রা.", description: "গ্যাস্ট্রিকের ঔষধ", price: 12, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 7, name: "অ্যান্টাসিড ট্যাবলেট", description: "অ্যাসিডিটি কমানোর ঔষধ", price: 5, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 12, name: "আইবুপ্রোফেন ৪০০ মি.গ্রা.", description: "ব্যথানাশক ঔষধ", price: 15, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 17, name: "ডাইক্লোফেনাক সোডিয়াম ৫০ মি.গ্রা.", description: "ব্যথানাশক ঔষধ", price: 8, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 37, name: "অমিপ্রাজল ২০ মি.গ্রা.", description: "গ্যাস্ট্রিকের ঔষধ", price: 14, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 38, name: "রেনিটিডিন ১৫০ মি.গ্রা.", description: "গ্যাস্ট্রিকের ঔষধ", price: 6, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 39, name: "পেন্টোপ্রাজল ৪০ মি.গ্রা.", description: "গ্যাস্ট্রিকের ঔষধ", price: 25, image: "https://static-01.daraz.com.bd/p/7d7e0c3a4c2c3d1a1a1a1a1a1a1a1.jpg", stock: "স্টকে আছে" },
+                { id: 40, name: "মেফেনামিক অ্যাসিড ৫০০ মি.গ্রা.", description: "ব্যথানাশক ঔষধ", price: 10, image: "https://static-01.daraz.com.bd/p/7
 </html>
